@@ -8,9 +8,11 @@ app.use(express.json());
 // Routes
 const getAudiobooks = require("./router/getAudiobook");
 const searchAudiobook = require("./router/searchAudiobook");
+const explore = require("./router/explore");
 
 app.use("/audiobook", getAudiobooks);
 app.use("/search", searchAudiobook);
+app.use("/explore", explore);
 
 // ErrorHandler
 app.use(ErrorHandler);

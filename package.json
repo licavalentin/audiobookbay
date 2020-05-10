@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app"
+    "start": "node app",
+    "dev": "nodemon app"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
     "request": "^2.88.2"
