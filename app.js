@@ -1,20 +1,28 @@
-const express = require("express");
-const app = express();
-const ErrorHandler = require("./middleware/ErrorHandler");
+const search = require("./utils/search");
+const getAudiobook = require("./utils/getAudiobook");
+const { category, tag } = require("./utils/explore");
 
-const PORT = process.env.PORT || 5000;
-app.use(express.json());
+module.exports = {
+  search: (query, page = 1) => {
+    return search(query, page);
+  },
+  audiobook: (audiobook) => {
+    return getAudiobook(audiobook);
+  },
+  explore: (type, explore, page = 1) => {
+    switch (type) {
+      case "category":
+        return category(explore, page);
 
-// Routes
-const getAudiobooks = require("./router/getAudiobook");
-const searchAudiobook = require("./router/searchAudiobook");
-const explore = require("./router/explore");
+      case "tag":
+        return tag(explore, page);
+    }
 
-app.use("/audiobook", getAudiobooks);
-app.use("/search", searchAudiobook);
-app.use("/explore", explore);
-
-// ErrorHandler
-app.use(ErrorHandler);
-
-app.listen(PORT);
+    return new Promise((resolve) => {
+      resolve({
+        success: false,
+        message: "You can explore only by category and tag",
+      });
+    });
+  },
+};

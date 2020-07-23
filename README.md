@@ -1,52 +1,93 @@
-# AudioBookBay REST API using NodeJS
+# AudioBookBay Scraper NodeJS
 
-<p><strong>AudioBookBay Client API in NodeJS</strong></p>
+## Install
 
-## Configuration
-
-### Searching
-
-<p>The URL</p>
-
-<http://localhost:5000/search/:query/:page>
-
-#### Response
-
-```javascript
-{
- success: true,
- count: "Audiobook Count",
- pagination: {
-  currentPage: "Current Page",
-  total: "Total Pages"
- },
- data: [
-   {
-     title: "Audiobook Title",
-     url:
-       "Audiobook URL Link",
-     category:
-       ["Array of Category's"],
-     lang: "Audiobook Language",
-     cover: "Audiobook Cover",
-     posted: "Date when Audiobook was posted",
-     info: {
-         format: "Audiobook Format",
-         bitrate: "Audiobook Bitrate",
-         size: ["Audiobook Size","Size UNIT"]
-     }
-   }, ...
- ]
-}
+```
+npm install audiobookbay
 ```
 
-### Exploring By Category
+## Usage
 
-<p>The URL</p>
+### Searching by Query
 
-<http://localhost:5000/explore/category/:category/:page>
+```js
+const audiobookbay = require("audiobookbay");
 
-### Options
+audiobookbay.search("thor", 2);
+// ("query","page")
+
+// Response
+// {
+//  success: true,
+//  count: "Audiobook Count",
+//  pagination: {
+//   currentPage: "Current Page",
+//   total: "Total Pages"
+//  },
+//  data: [
+//    {
+//      title: "Audiobook Title",
+//      url:
+//        "Audiobook URL",
+//      category:
+//        ["Array of Category's"],
+//      lang: "Audiobook Language",
+//      cover: "Audiobook Cover",
+//      posted: "Date when Audiobook was posted",
+//      info: {
+//          format: "Audiobook Format",
+//          bitrate: "Audiobook Bitrate",
+//          size: ["Audiobook Size","Size UNIT"]
+//      }
+//    }, ...
+//  ]
+// }
+```
+
+## Documentation
+
+| Name  | Description  | Default | Type   |
+| ----- | ------------ | ------- | ------ |
+| Query | Search Query |         | String |
+| Page  | Search Page  | 1       | Number |
+
+### Exploring By Category/Tag
+
+```js
+const audiobookbay = require("audiobookbay");
+
+audiobookbay.explore("tag", "english");
+// ("category/tag","categroy/tag query")
+
+// Response
+// {
+//  success: true,
+//  count: "Audiobook Count",
+//  pagination: {
+//   currentPage: "Current Page",
+//   total: "Total Pages"
+//  },
+//  data: [
+//    {
+//      title: "Audiobook Title",
+//      url:
+//        "Audiobook URL",
+//      category:
+//        ["Array of Category's"],
+//      lang: "Audiobook Language",
+//      cover: "Audiobook Cover",
+//      posted: "Date when Audiobook was posted",
+//      info: {
+//          format: "Audiobook Format",
+//          bitrate: "Audiobook Bitrate",
+//          size: ["Audiobook Size","Size UNIT"]
+//      }
+//    }, ...
+//  ]
+// }
+```
+
+### Category Options
 
 <ul>
   <li>
@@ -119,63 +160,53 @@
   </li>
 </ul>
 
-#### Response
-
-##### Same as Searching response
-
-### Exploring By Tag
-
-<p>The URL</p>
-
-<http://localhost:5000/explore/tag/:tag/:page>
-
-### Options
+### Tag Options
 
 <ul>
-  Popular Language:
-  <li>english</li>
+<li>
+Popular Language:
+<ul>
+
+<li>english</li>
   <li>dutch</li>
   <li>french</li>
   <li>spanish</li>
   <li>german</li>
 </ul>
-
-#### Response
-
-##### Same as Searching response
+</li>
+  
+</ul>
 
 ### Get Audiobook
 
-<p>The URL</p>
+```js
+const audiobookbay = require("audiobookbay");
 
-<http://localhost:5000/audiobook/:audiobook>
+audiobookbay.audiobook("example-example");
+// ("audiobook url")
 
-1. :audiobook = Audiobook URL
-
-#### Response
-
-```javascript
-{
- success:true,
- data: {
-   title: "Audiobook title",
-   category: ["Array of Category's"],
-   lang: "Audiobook Language",
-   cover: "Audiobook Cover",
-   author: "Audiobook Author",
-   read: "Audiobook Reader",
-   audioSample: "Sample of Audiobook",
-   specs: {
-       format: "Audiobook Format",
-       bitrate: "Audiobook Bitrate"
-   },
-   abridged: "Is the book shortened",
-   desc: "Audiobook Description",
-   torrent: {
-       magnet: "Audiobook Magnet Link",
-       hash: "Audiobook Hash",
-       size: ["Audiobook size","Size UNIT"]
-   }
- }
-}
+// Response
+// {
+//  success:true,
+//  data: {
+//    title: "Audiobook title",
+//    category: ["Array of Category's"],
+//    lang: "Audiobook Language",
+//    cover: "Audiobook Cover",
+//    author: "Audiobook Author",
+//    read: "Audiobook Reader",
+//    audioSample: "Sample of Audiobook",
+//    specs: {
+//        format: "Audiobook Format",
+//        bitrate: "Audiobook Bitrate"
+//    },
+//    abridged: "Is the book shortened",
+//    desc: "Audiobook Description",
+//    torrent: {
+//        magnet: "Audiobook Magnet Link",
+//        hash: "Audiobook Hash",
+//        size: ["Audiobook size","Size UNIT"]
+//    }
+//  }
+// }
 ```
