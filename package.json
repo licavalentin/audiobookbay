@@ -3,20 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "scripts": {
-    "start": "node app"
-  },
   "keywords": [
     "audiobookbay",
     "audiobook",
     "torrent"
   ],
-  "author": "",
+  "author": "bashvtini",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
-    "express": "^4.17.1",
-    "request": "^2.88.2"
+    "cheerio": "^1.0.0-rc.3"
   }
 }
