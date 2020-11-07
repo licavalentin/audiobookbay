@@ -63,21 +63,32 @@ module.exports = async (audiobook) => {
     // AudioBook Description
     const description = $(".desc").find("p:not(:first-child)").text();
 
-    // AudioBook Torrent Hash
-    const hash = $(
-      ".postContent table tr:nth-last-child(7) td:last-child"
+    // AudioBook Torrent Size
+    const size = $(
+      ".postContent table tr:nth-last-child(11) td:last-child"
     ).text();
 
-    // AudioBook Torrent Size
-    const size = $(`span[style="color:#00f;"]`).text();
+    // Audiobook Tracket, Torrent Hash
+    const trackers = [];
+    let hash;
 
-    // AudioBook Size in Unit
-    const sizeUnit = $(".postContent table tr:nth-last-child(11) td:last-child")
-      .text()
-      .split(" ")[1];
+    $(".postContent table tr").each((index, element) => {
+      const tdFirst = $(element).find("td:first-child");
+      const tdSecond = $(element).find("td:last-child");
 
-    // AudioBook Magnet Link
-    const magnet = `magnet:?xt=urn:btih:${hash}&dn=${title}&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Ftracker.open-internet.nl%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A69691337%2Fannounce&tr=udp%3A%2F%2Ftracker.vanitycore.co%3A6969%2Fannounce&tr=http%3A%2F%2Ftracker.baravik.org%3A6970%2Fannounce&tr=http%3A%2F%2Fretracker.telecom.by%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.vanitycore.co%3A6969%2Fannounce`;
+      switch (tdFirst.text()) {
+        case "Tracker:":
+          trackers.push(tdSecond.text());
+          break;
+
+        case "Info Hash:":
+          hash = tdSecond.text();
+          break;
+
+        default:
+          break;
+      }
+    });
 
     const data = {
       title,
@@ -94,9 +105,9 @@ module.exports = async (audiobook) => {
       abridged,
       description,
       torrent: {
-        magnet,
         hash,
-        size: [size, sizeUnit],
+        trackers,
+        size,
       },
     };
 

@@ -16,6 +16,9 @@ module.exports = {
 
       case "tag":
         return tag(explore, page);
+
+      default:
+        return category(explore, page);
     }
 
     return new Promise((resolve) => {

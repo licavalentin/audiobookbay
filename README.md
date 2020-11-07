@@ -8,205 +8,173 @@ npm install audiobookbay
 
 ## Usage
 
-### Searching by Query
-
-```js
-const audiobookbay = require("audiobookbay");
-
-audiobookbay.search("thor", 2);
-// ("query","page")
-
-// Response
-// {
-//  success: true,
-//  count: "Audiobook Count",
-//  pagination: {
-//   currentPage: "Current Page",
-//   total: "Total Pages"
-//  },
-//  data: [
-//    {
-//      title: "Audiobook Title",
-//      url:
-//        "Audiobook URL",
-//      category:
-//        ["Array of Category's"],
-//      lang: "Audiobook Language",
-//      cover: "Audiobook Cover",
-//      posted: "Date when Audiobook was posted",
-//      info: {
-//          format: "Audiobook Format",
-//          bitrate: "Audiobook Bitrate",
-//          size: ["Audiobook Size","Size UNIT"]
-//      }
-//    }, ...
-//  ]
-// }
-```
-
-## Documentation
-
 | Name  | Description  | Default | Type   |
 | ----- | ------------ | ------- | ------ |
 | Query | Search Query |         | String |
 | Page  | Search Page  | 1       | Number |
 
-### Exploring By Category/Tag
-
 ```js
 const audiobookbay = require("audiobookbay");
 
-audiobookbay.explore("tag", "english");
-// ("category/tag","categroy/tag query")
-
-// Response
-// {
-//  success: true,
-//  count: "Audiobook Count",
-//  pagination: {
-//   currentPage: "Current Page",
-//   total: "Total Pages"
-//  },
-//  data: [
-//    {
-//      title: "Audiobook Title",
-//      url:
-//        "Audiobook URL",
-//      category:
-//        ["Array of Category's"],
-//      lang: "Audiobook Language",
-//      cover: "Audiobook Cover",
-//      posted: "Date when Audiobook was posted",
-//      info: {
-//          format: "Audiobook Format",
-//          bitrate: "Audiobook Bitrate",
-//          size: ["Audiobook Size","Size UNIT"]
-//      }
-//    }, ...
-//  ]
-// }
+const search = audiobookbay.search("dune", 2).then((response) => {
+  return response;
+});
 ```
 
-### Category Options
+### Response
+
+```json
+{
+ "success": true,
+ "count": "Audiobook Count",
+ "pagination": {
+  "currentPage": "Current Page",
+  "total": "Total Pages"
+ },
+ "data": [
+   {
+     "title": "Audiobook Title",
+     "url":
+       "Audiobook URL",
+     "category":
+       ["Array of Category's"],
+     "lang": "Audiobook Language",
+     "cover": "Audiobook Cover",
+     "posted": "Date when Audiobook was posted",
+     "info": {
+         "format": "Audiobook Format",
+         "bitrate": "Audiobook Bitrate",
+         "size": ["Audiobook Size","Size UNIT"]
+     }
+   }, ...
+ ]
+}
+```
+
+### Exploring By Category/Tag
+
+#### Category Options
 
 <ul>
+
   <li>
-    Age:
-    <ul>
-      <li>children</li>
-      <li>teen-young-adult</li>
-      <li>adults</li>
-      <li>the-undead</li>
-    </ul>
+    Age: children, teen-young-adult, adults, the-undead
   </li>
   <li>
-    Category:
-    <ul>
-      <li>postapocalyptic</li>
-      <li>action</li>
-      <li>adventure</li>
-      <li>art</li>
-      <li>autobiography-biographies</li>
-      <li>business</li>
-      <li>computer</li>
-      <li>contemporary</li>
-      <li>crime</li>
-      <li>detective</li>
-      <li>doctor-who-sci-fi</li>
-      <li>education</li>
-      <li>fantasy</li>
-      <li>general-fiction</li>
-      <li>historical-fiction</li>
-      <li>history</li>
-      <li>horror</li>
-      <li>lecture</li>
-      <li>lgbt</li>
-      <li>literature</li>
-      <li>litrpg</li>
-      <li>general-non-fiction</li>
-      <li>mystery</li>
-      <li>paranormal</li>
-      <li>plays-theater</li>
-      <li>poetry</li>
-      <li>political</li>
-      <li>radio-productions</li>
-      <li>romance</li>
-      <li>sci-fi</li>
-      <li>science</li>
-      <li>self-help</li>
-      <li>spiritual</li>
-      <li>sports</li>
-      <li>suspense</li>
-      <li>thriller</li>
-      <li>true-crime</li>
-      <li>tutorial</li>
-      <li>westerns</li>
+    Category: postapocalyptic, action, adventure, art, autobiography-biographies, business, computer, contemporary, crime, detective, doctor-who-sci-fi, education, fantasy, general-fiction, historical-fiction, history, horror, lecture, lgbt, literature, litrpg, general-non-fiction, mystery, paranormal, plays-theater, poetry, political, radio-productions, romance, sci-fi, science, self-help, spiritual, sports, suspense, thriller, true-crime, tutorial, westerns
     </ul>
   </li>
 
   <li>
-    Category Modifiers:
-    <ul>
-      <li>anthology</li>
-      <li>bestsellers</li>
-      <li>classic</li>
-      <li>documentary</li>
-      <li>full-cast</li>
-      <li>libertarian</li>
-      <li>military</li>
-      <li>novel</li>
-      <li>short-story</li>
-    </ul>
+    Category Modifiers: anthology, bestsellers, classic, documentary, full-cast, libertarian, military, novel, short-story
   </li>
 </ul>
 
-### Tag Options
+#### Tag Options
 
 <ul>
 <li>
-Popular Language:
-<ul>
-
-<li>english</li>
-  <li>dutch</li>
-  <li>french</li>
-  <li>spanish</li>
-  <li>german</li>
-</ul>
+Popular Language: english, dutch, french, spanish, german
 </li>
   
 </ul>
 
-### Get Audiobook
+| Name   | Description              | Default  | Type   |
+| ------ | ------------------------ | -------- | ------ |
+| Type   | Explore by tag, category | category | String |
+| Option | Options filter           |          | String |
+| Page   | Page Number              | 1        | String |
 
 ```js
 const audiobookbay = require("audiobookbay");
 
-audiobookbay.audiobook("example-example");
-// ("audiobook url")
+const explore = audiobookbay
+  .explore("category", "postapocalyptic", 2)
+  .then((response) => {
+    return response;
+  });
+```
 
-// Response
-// {
-//  success:true,
-//  data: {
-//    title: "Audiobook title",
-//    category: ["Array of Category's"],
-//    lang: "Audiobook Language",
-//    cover: "Audiobook Cover",
-//    author: "Audiobook Author",
-//    read: "Audiobook Reader",
-//    audioSample: "Sample of Audiobook",
-//    specs: {
-//        format: "Audiobook Format",
-//        bitrate: "Audiobook Bitrate"
-//    },
-//    abridged: "Is the book shortened",
-//    desc: "Audiobook Description",
-//    torrent: {
-//        magnet: "Audiobook Magnet Link",
-//        hash: "Audiobook Hash",
-//        size: ["Audiobook size","Size UNIT"]
-//    }
-//  }
-// }
+### Response
+
+```json
+{
+ "success": true,
+ "count": "Audiobook Count",
+ "pagination": {
+  "currentPage": "Current Page",
+  "total": "Total Pages"
+ },
+ "data": [
+   {
+     "title": "Audiobook Title",
+     "url":
+       "Audiobook URL",
+     "category":
+       ["Array of Category's"],
+     "lang": "Audiobook Language",
+     "cover": "Audiobook Cover",
+     "posted": "Date when Audiobook was posted",
+     "info": {
+         "format": "Audiobook Format",
+         "bitrate": "Audiobook Bitrate",
+         "size": ["Audiobook Size","Size UNIT"]
+     }
+   }, ...
+ ]
+}
+```
+
+### Get Audiobook
+
+| Name      | Description   | Default | Type   |
+| --------- | ------------- | ------- | ------ |
+| Audiobook | Audiobook URL |         | String |
+
+```js
+const audiobookbay = require("audiobookbay");
+
+const book = audiobookbay
+  .audiobook("the-road-to-dune-brian-herbert-kevin-j-anderson-frank-herbert")
+  .then((response) => {
+    return response;
+  });
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "title": "Audiobook title",
+    "category": ["Array of Category's"],
+    "lang": "Audiobook Language",
+    "cover": "Audiobook Cover",
+    "author": "Audiobook Author",
+    "read": "Audiobook Reader",
+    "audioSample": "Sample of Audiobook MP3",
+    "specs": {
+      "format": "Audiobook Format",
+      "bitrate": "Audiobook Bitrate"
+    },
+    "abridged": "Is the book shortened",
+    "desc": "Audiobook Description",
+    "torrent": {
+      "hash": "Audiobook Hash",
+      "trackers": ["Audiobook Trackers"],
+      "size": ["Audiobook size", "Size UNIT"]
+    }
+  }
+}
+```
+
+## Important
+
+### To create magnet link
+
+```js
+const magnet = `magnet:?xt=urn:btih:${hash}&dn=${title}&tr=${torrent.trackers.join(
+  "&tr="
+)}`;
 ```
