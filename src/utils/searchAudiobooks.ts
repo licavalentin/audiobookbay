@@ -1,31 +1,40 @@
-const cheerio = require("cheerio");
-const axios = require("axios");
+import cheerio from "cheerio";
+import fetch from "node-fetch";
 
-module.exports = async (url) => {
+import { Audiobook, Pagination } from "@interface/search";
+
+/**
+ * Search Audiobooks
+ *
+ * @param {string} url URL for audiobooks to scrape
+ */
+export default async (url: string) => {
   try {
-    const data = [];
-    const paggination = {};
-
-    const audioBookSearch = await axios.get(url);
-
-    const $ = cheerio.load(audioBookSearch.data);
+    const request = await fetch(url);
+    const results = await request.text();
+    const $ = cheerio.load(results);
 
     // Nothing is Found Error
     if ($(`#content h3`).text().trim() === "Not Found") {
-      notFound.success = false;
+      throw new Error("Nothing was found");
     }
 
-    // Get Detail
+    // Get Details for each audiobook
+    const data: Audiobook[] = [];
+
     $(`#content div.post`).each((index, element) => {
+      const audiobookTitleEl = $(element).find(`div.postTitle h2 a`);
+
       // Title
-      const title = $(element).find(`h2 a`).text();
+      const title = audiobookTitleEl.text();
 
       // Url
-      const url = $(element)
-        .find(`h2 a`)
-        .attr("href")
-        .replace("/audio-books/", "")
-        .replace("/", "");
+      let url: string | undefined;
+      const urlEl = audiobookTitleEl.attr("href");
+
+      if (urlEl) {
+        url = urlEl.replace("/audio-books/", "").replace("/", "");
+      }
 
       // Category
       const category = $(element)
@@ -43,8 +52,9 @@ module.exports = async (url) => {
         .text()
         .split("Language: ")[1]
         .split(`Keywords:`)[0];
+
       // Cover
-      let cover;
+      let cover: string | undefined;
       const coverUrl = $(element).find(`.postContent img`).attr("src");
 
       if (coverUrl === "/images/default_cover.jpg") {
@@ -74,6 +84,7 @@ module.exports = async (url) => {
       const size = $(element)
         .find(`.postContent span[style="color:#00f;"]`)
         .text();
+
       const sizeUnit = $(element)
         .find(`p[style="text-align:center;"]`)
         .text()
@@ -97,19 +108,23 @@ module.exports = async (url) => {
       data.push(audiobook);
     });
 
+    // Paggination
+    const pagination: Pagination = {
+      currentPage: 0,
+      totalPages: 0,
+      count: 0,
+    };
+
     if ($(`.navigation .current`).text() !== "") {
-      // Paggination
-      const page = parseInt($(`.navigation .current`).text());
-      let total;
+      const currentPage = parseInt($(`.navigation .current`).text());
+      let total: number = 0;
 
       if ($(`.navigation .wp-pagenavi a:last-child`).text() === "»»") {
-        total = parseInt(
-          $(`.navigation .wp-pagenavi a:last-child`)
-            .attr("href")
-            .split("/page/")[1]
-            .split("/")[0],
-          10
-        );
+        const totalEl = $(`.navigation .wp-pagenavi a:last-child`).attr("href");
+
+        if (totalEl) {
+          total = parseInt(totalEl.split("/page/")[1].split("/")[0], 10);
+        }
       } else {
         total = parseInt(
           $(`.navigation .wp-pagenavi a:nth-last-child(2)`).text(),
@@ -117,18 +132,18 @@ module.exports = async (url) => {
         );
       }
 
-      if (total + 1 === page) {
-        total = page;
+      if (total + 1 === currentPage) {
+        total = currentPage;
       }
 
-      paggination.currentPage = page;
-      paggination.totalPages = total;
-      paggination.count = data.length;
+      pagination.currentPage = currentPage;
+      pagination.totalPages = total;
+      pagination.count = data.length;
     }
 
     return {
       success: true,
-      paggination,
+      pagination,
       data,
     };
   } catch (error) {

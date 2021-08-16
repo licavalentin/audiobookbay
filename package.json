@@ -1,17 +1,28 @@
 {
   "name": "audiobookbay",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "version": "1.0.4",
+  "description": "Audiobookbay web scraper",
+  "main": "dist/index.js",
+  "types": "dist",
   "keywords": [
     "audiobookbay",
     "audiobook",
     "torrent"
   ],
-  "author": "bashvtini",
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "node dist/index.js"
+  },
+  "author": "Valentin Lica",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3"
-  }
+    "@types/cheerio": "^0.22.30",
+    "@types/node-fetch": "^2.5.12",
+    "cheerio": "^1.0.0-rc.3",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "type": "module"
 }

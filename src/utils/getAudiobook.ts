@@ -1,34 +1,31 @@
-const cheerio = require("cheerio");
-const axios = require("axios");
+import cheerio from "cheerio";
+import fetch from "node-fetch";
 
-module.exports = async (audiobook) => {
-  // AudioBook URL
-  // Some Url have characters not recognised by axios encodeURI
-  const url = encodeURI(`http://audiobookbay.nl/audio-books/${audiobook}/`);
+import { AudioBook } from "@interface/audiobook";
 
+export default async (audiobook: string) => {
   try {
-    // Fetch AudioBook
-    const AudioBook = await axios.get(url);
+    const url = encodeURI(`http://audiobookbay.nl/audio-books/${audiobook}/`);
+    const request = await fetch(url);
+    const results = await request.text();
+    const $ = cheerio.load(results);
 
-    // Load HTML with Cheerio
-    const $ = cheerio.load(AudioBook.data);
-
-    // AudioBook Title
+    // Title
     const title = $(".postTitle h1").text();
 
-    // AudioBook Category
-    const category = [];
+    // Category
+    const category: string[] = [];
     $(".postInfo a").each((index, el) => {
       if ($(el).attr("rel") === "category tag") {
         category.push($(el).text());
       }
     });
 
-    // AudioBook Language
+    // Language
     const lang = $('.postInfo a span[itemprop="inLanguage"]').text();
 
-    // AudioBook Cover
-    let cover;
+    // Cover
+    let cover: string | undefined;
     const coverUrl = $(".postContent")
       .find('img[itemprop="thumbnailUrl"]')
       .attr("src");
@@ -39,38 +36,40 @@ module.exports = async (audiobook) => {
       cover = coverUrl;
     }
 
-    // AudioBook Author/s
-    const author = $(".desc").find('span[class="author"]').text();
+    const descEl = $(".desc");
 
-    // AudioBook Voice Actor Name
-    const read = $(".desc").find('span[class="narrator"]').text();
+    // Author/s
+    const author = descEl.find('span[class="author"]').text();
 
-    // AudioBook Audio Sample in MP3
+    // Voice Actor Name
+    const read = descEl.find('span[class="narrator"]').text();
+
+    // Audio Sample in MP3
     let audioSample;
-    if (AudioBook.data.search("<audio") !== -1) {
+    if (results.search("<audio") !== -1) {
       audioSample = $(`audio`).attr("src");
     }
 
-    // AudioBook Format
-    const format = $(".desc").find('span[class="format"]').text();
+    // Format
+    const format = descEl.find('span[class="format"]').text();
 
-    // AudioBook Bitrate
-    const bitrate = $(".desc").find('span[class="bitrate"]').text();
+    // Bitrate
+    const bitrate = descEl.find('span[class="bitrate"]').text();
 
-    // AudioBook Abridged
-    const abridged = $(".desc").find('span[class="is_abridged"]').text();
+    // Abridged
+    const abridged = descEl.find('span[class="is_abridged"]').text();
 
-    // AudioBook Description
-    const description = $(".desc").find("p:not(:first-child)").text();
+    // Description
+    const description = descEl.find("p:not(:first-child)").text();
 
-    // AudioBook Torrent Size
+    // Torrent Size
     const size = $(
       ".postContent table tr:nth-last-child(11) td:last-child"
     ).text();
 
-    // Audiobook Tracket, Torrent Hash
-    const trackers = [];
-    let hash;
+    // Tracket, Torrent Hash
+    const trackers: string[] = [];
+    let hash: string | undefined;
 
     $(".postContent table tr").each((index, element) => {
       const tdFirst = $(element).find("td:first-child");
@@ -90,7 +89,7 @@ module.exports = async (audiobook) => {
       }
     });
 
-    const data = {
+    const data: AudioBook = {
       title,
       category,
       lang,
@@ -118,7 +117,7 @@ module.exports = async (audiobook) => {
   } catch (error) {
     return {
       success: false,
-      message: `Audiobook Does not Exist's`,
+      message: `Audiobook does not exist's`,
     };
   }
 };

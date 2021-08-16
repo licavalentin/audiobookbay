@@ -6,7 +6,7 @@
 npm install audiobookbay
 ```
 
-## Usage
+## Searching for audiobooks
 
 | Name  | Description  | Default | Type   |
 | ----- | ------------ | ------- | ------ |
@@ -14,11 +14,9 @@ npm install audiobookbay
 | Page  | Search Page  | 1       | Number |
 
 ```js
-const audiobookbay = require("audiobookbay");
+import audiobookbay from "audiobookbay";
 
-const search = audiobookbay.search("dune", 2).then((response) => {
-  return response;
-});
+const audiobooks = await audiobookbay.search("dune", 2);
 ```
 
 ### Response
@@ -56,10 +54,10 @@ const search = audiobookbay.search("dune", 2).then((response) => {
 #### Category Options
 
 <ul>
-
   <li>
     Age: children, teen-young-adult, adults, the-undead
   </li>
+
   <li>
     Category: postapocalyptic, action, adventure, art, autobiography-biographies, business, computer, contemporary, crime, detective, doctor-who-sci-fi, education, fantasy, general-fiction, historical-fiction, history, horror, lecture, lgbt, literature, litrpg, general-non-fiction, mystery, paranormal, plays-theater, poetry, political, radio-productions, romance, sci-fi, science, self-help, spiritual, sports, suspense, thriller, true-crime, tutorial, westerns
     </ul>
@@ -73,10 +71,9 @@ const search = audiobookbay.search("dune", 2).then((response) => {
 #### Tag Options
 
 <ul>
-<li>
-Popular Language: english, dutch, french, spanish, german
-</li>
-  
+  <li>
+  Popular Language: english, dutch, french, spanish, german
+  </li>
 </ul>
 
 | Name   | Description              | Default  | Type   |
@@ -86,13 +83,9 @@ Popular Language: english, dutch, french, spanish, german
 | Page   | Page Number              | 1        | String |
 
 ```js
-const audiobookbay = require("audiobookbay");
+import audiobookbay from "audiobookbay";
 
-const explore = audiobookbay
-  .explore("category", "postapocalyptic", 2)
-  .then((response) => {
-    return response;
-  });
+const audiobooks = await audiobookbay.explore("category", "postapocalyptic", 2);
 ```
 
 ### Response
@@ -132,13 +125,11 @@ const explore = audiobookbay
 | Audiobook | Audiobook URL |         | String |
 
 ```js
-const audiobookbay = require("audiobookbay");
+import audiobookbay from "audiobookbay";
 
-const book = audiobookbay
-  .audiobook("the-road-to-dune-brian-herbert-kevin-j-anderson-frank-herbert")
-  .then((response) => {
-    return response;
-  });
+const audiobooks = await audiobookbay.audiobook(
+  "the-road-to-dune-brian-herbert-kevin-j-anderson-frank-herbert"
+);
 ```
 
 ### Response
@@ -168,8 +159,6 @@ const book = audiobookbay
   }
 }
 ```
-
-## Important
 
 ### To create magnet link
 
