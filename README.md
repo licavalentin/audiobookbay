@@ -13,6 +13,8 @@ npm install audiobookbay
 | Query | Search Query |         | String |
 | Page  | Search Page  | 1       | Number |
 
+<br>
+
 ```js
 import audiobookbay from "audiobookbay";
 
@@ -82,6 +84,8 @@ const audiobooks = await audiobookbay.search("dune", 2);
 | Option | Options filter           |          | String |
 | Page   | Page Number              | 1        | String |
 
+<br>
+
 ```js
 import audiobookbay from "audiobookbay";
 
@@ -123,6 +127,8 @@ const audiobooks = await audiobookbay.explore("category", "postapocalyptic", 2);
 | Name      | Description   | Default | Type   |
 | --------- | ------------- | ------- | ------ |
 | Audiobook | Audiobook URL |         | String |
+
+<br>
 
 ```js
 import audiobookbay from "audiobookbay";

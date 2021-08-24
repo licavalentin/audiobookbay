@@ -10,8 +10,7 @@
     "torrent"
   ],
   "scripts": {
-    "build": "tsc -p .",
-    "start": "node dist/index.js"
+    "build": "rm -rf dist && tsc -p . && tscpaths -p ./tsconfig.json -s ./src -o ./dist"
   },
   "author": "Valentin Lica",
   "license": "ISC",
@@ -22,6 +21,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "tscpaths": "^0.0.9",
     "typescript": "^4.3.5"
   },
   "type": "module"
