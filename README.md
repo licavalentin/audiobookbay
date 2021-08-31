@@ -161,7 +161,13 @@ const audiobooks = await audiobookbay.audiobook(
       "hash": "Audiobook Hash",
       "trackers": ["Audiobook Trackers"],
       "size": ["Audiobook size", "Size UNIT"]
-    }
+    },
+    "related": [
+      {
+        "title": "Related Audiobook Title",
+        "url": "Related Audiobook URL"
+      }
+    ]
   }
 }
 ```

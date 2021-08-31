@@ -17,4 +17,8 @@ export interface AudioBook {
     trackers: string[];
     size: string;
   };
+  related: {
+    title: string;
+    url: string | undefined;
+  }[];
 }

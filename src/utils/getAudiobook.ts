@@ -67,7 +67,7 @@ export default async (audiobook: string) => {
       ".postContent table tr:nth-last-child(11) td:last-child"
     ).text();
 
-    // Tracket, Torrent Hash
+    // Tracker, Torrent Hash
     const trackers: string[] = [];
     let hash: string | undefined;
 
@@ -86,6 +86,35 @@ export default async (audiobook: string) => {
 
         default:
           break;
+      }
+    });
+
+    const related: {
+      title: string;
+      url: string | undefined;
+    }[] = [];
+
+    $(`#rsidebar ul li`).each((index, element) => {
+      if ($(element).find("h2").text().includes("Related")) {
+        $(element)
+          .find("ul li")
+          .each((_, relatedEl) => {
+            const linkEl = $(relatedEl).find("a");
+
+            const title = linkEl.text();
+
+            let url;
+            let urlEl = linkEl.attr("href");
+
+            if (urlEl) {
+              url = urlEl.replace("/audio-books/", "").replace("/", "");
+
+              related.push({
+                title,
+                url,
+              });
+            }
+          });
       }
     });
 
@@ -108,6 +137,7 @@ export default async (audiobook: string) => {
         trackers,
         size,
       },
+      related,
     };
 
     return {
