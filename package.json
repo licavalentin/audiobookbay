@@ -1,7 +1,7 @@
 {
   "name": "audiobookbay",
   "version": "1.0.7",
-  "description": "Audiobookbay web scraper",
+  "description": "Audiobookbay Scraper",
   "main": "dist/index.js",
   "types": "dist",
   "keywords": [
@@ -15,13 +15,13 @@
   "author": "Valentin Lica",
   "license": "ISC",
   "dependencies": {
-    "@types/cheerio": "^0.22.30",
-    "@types/node-fetch": "^2.5.12",
-    "cheerio": "^1.0.0-rc.3",
+    "@types/cheerio": "^0.22.31",
+    "@types/node-fetch": "^2.6.1",
+    "cheerio": "^1.0.0-rc.11",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "tscpaths": "^0.0.9",
-    "typescript": "^4.3.5"
+    "typescript": "^4.7.3"
   }
 }

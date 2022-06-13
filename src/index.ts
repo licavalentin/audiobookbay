@@ -11,7 +11,7 @@ import { Categories, Tags } from "@interface/explore";
  */
 export const search = async (query: string, page: number = 1) =>
   await getAudiobooks(
-    `http://audiobookbay.nl/page/${page}/?s=${query.toLowerCase()}`
+    `http://audiobookbay.se/page/${page}/?s=${query.toLowerCase()}`
   );
 
 /**
@@ -40,7 +40,7 @@ export const explore = async (
     typeOptions: Categories | Tags,
     page: number = 1
   ) => {
-    return `http://audiobookbay.nl/audio-books/${type}/${typeOptions}/${
+    return `http://audiobookbay.se/audio-books/${type}/${typeOptions}/${
       page !== 1 ? "page/" + page + "/" : ""
     }`;
   };

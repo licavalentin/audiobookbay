@@ -58,7 +58,7 @@ export default async (url: string) => {
       const coverUrl = $(element).find(`.postContent img`).attr("src");
 
       if (coverUrl === "/images/default_cover.jpg") {
-        cover = "http://audiobookbay.nl" + coverUrl;
+        cover = "http://audiobookbay.se" + coverUrl;
       } else {
         cover = coverUrl;
       }

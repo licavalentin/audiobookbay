@@ -5,7 +5,7 @@ import { AudioBook } from "@interface/audiobook";
 
 export default async (audiobook: string) => {
   try {
-    const url = encodeURI(`http://audiobookbay.nl/audio-books/${audiobook}/`);
+    const url = encodeURI(`http://audiobookbay.se/audio-books/${audiobook}/`);
     const request = await fetch(url);
     const results = await request.text();
     const $ = cheerio.load(results);
@@ -31,7 +31,7 @@ export default async (audiobook: string) => {
       .attr("src");
 
     if (coverUrl === "/images/default_cover.jpg") {
-      cover = "http://audiobookbay.nl" + coverUrl;
+      cover = "http://audiobookbay.se" + coverUrl;
     } else {
       cover = coverUrl;
     }
