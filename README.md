@@ -1,12 +1,17 @@
-# AudioBookBay Scraper NodeJS
+<p align="center">
+    <img alt="Audiobookbay" src="./assets/logo.svg" width="60" />
+</p>
+<h1 align="center">
+AudioBookBay Scraper Rest API NodeJS
+</h1>
 
-## Install
+## 🏁 Install
 
-```
+```shh
 npm install audiobookbay
 ```
 
-## Searching for audiobooks
+## 🔍 Searching for audiobooks
 
 | Name  | Description  | Default | Type   |
 | ----- | ------------ | ------- | ------ |
@@ -51,7 +56,7 @@ const audiobooks = await audiobookbay.search("dune", 2);
 }
 ```
 
-### Exploring By Category/Tag
+### 🪣 Exploring By Category/Tag
 
 #### Category Options
 
@@ -122,7 +127,7 @@ const audiobooks = await audiobookbay.explore("category", "postapocalyptic", 2);
 }
 ```
 
-### Get Audiobook
+### 🎵 Get Audiobook
 
 | Name      | Description   | Default | Type   |
 | --------- | ------------- | ------- | ------ |
@@ -172,7 +177,7 @@ const audiobooks = await audiobookbay.audiobook(
 }
 ```
 
-### To create magnet link
+### 🧲 To create magnet link
 
 ```js
 const magnet = `magnet:?xt=urn:btih:${hash}&dn=${title}&tr=${torrent.trackers.join(
