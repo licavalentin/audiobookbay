@@ -25,8 +25,7 @@ npm install audiobookbay
 import audiobookbay from "audiobookbay";
 
 const audiobooks = await audiobookbay.search("dune", 2, {
-  content: false,
-  torrent: false,
+  titleAuthor: true,
 });
 ```
 

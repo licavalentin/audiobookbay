@@ -7,12 +7,10 @@ export const defaultSearchIn: SearchIn = {
 };
 
 const getSearchInParam = (searchIn: SearchIn = defaultSearchIn) => {
-  const realSearchIn = { ...defaultSearchIn, ...searchIn };
-
   const tt = [
-    realSearchIn.titleAuthor ? "1" : "",
-    realSearchIn.content ? "2" : "",
-    realSearchIn.torrent ? "3" : "",
+    searchIn.titleAuthor ? "1" : "",
+    searchIn.content ? "2" : "",
+    searchIn.torrent ? "3" : "",
   ]
     .filter(Boolean)
     .join(",");
