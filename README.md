@@ -13,17 +13,20 @@ npm install audiobookbay
 
 ## 🔍 Searching for audiobooks
 
-| Name  | Description  | Default | Type   |
-| ----- | ------------ | ------- | ------ |
-| Query | Search Query |         | String |
-| Page  | Search Page  | 1       | Number |
+| Name      | Description            | Default                                               | Type   |
+| --------- | ---------------------- | ----------------------------------------------------- | ------ |
+| Query     | Search Query           |                                                       | String |
+| Page      | Search Page            | 1                                                     | Number |
+| Search In | Text content to search | `{ titleAuthor: true, content: true, torrent: true }` | Object |
 
 <br>
 
 ```js
 import audiobookbay from "audiobookbay";
 
-const audiobooks = await audiobookbay.search("dune", 2);
+const audiobooks = await audiobookbay.search("dune", 2, {
+  titleAuthor: true,
+});
 ```
 
 ### Response

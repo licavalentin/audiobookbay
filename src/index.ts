@@ -1,6 +1,9 @@
+import { URLSearchParams } from "url";
 import getAudiobook from "@utils/getAudiobook";
 import getAudiobooks from "@utils/searchAudiobooks";
 import { Categories, Tags } from "@interface/explore";
+import { SearchIn } from "@interface/search";
+import getSearchInParam, { defaultSearchIn } from "@utils/getSearchInParam";
 
 /**
  * Search Audiobooks
@@ -9,10 +12,22 @@ import { Categories, Tags } from "@interface/explore";
  * @param page Current Page
  * @returns Audiobook List
  */
-export const search = async (query: string, page: number = 1) =>
-  await getAudiobooks(
-    `http://audiobookbay.se/page/${page}/?s=${query.toLowerCase()}`
+export const search = async (
+  query: string,
+  page: number = 1,
+  searchIn: SearchIn = defaultSearchIn
+) => {
+  const tt = getSearchInParam(searchIn);
+
+  const params = new URLSearchParams({
+    s: query.toLowerCase(),
+    tt,
+  });
+
+  return await getAudiobooks(
+    `http://audiobookbay.se/page/${page}/?${params.toString()}`
   );
+};
 
 /**
  * Get Single Audiobook
