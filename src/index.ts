@@ -1,9 +1,10 @@
 import { URLSearchParams } from "url";
-import getAudiobook from "@utils/getAudiobook";
-import getAudiobooks from "@utils/searchAudiobooks";
-import { Categories, Tags } from "@interface/explore";
-import { SearchIn } from "@interface/search";
-import getSearchInParam, { defaultSearchIn } from "@utils/getSearchInParam";
+
+import { Categories, Tags } from "./interface/explore";
+import { SearchIn } from "./interface/search";
+
+import getAudiobook from "./utils/getAudiobook";
+import getAudiobooks from "./utils/searchAudiobooks";
 
 /**
  * Search Audiobooks
@@ -15,64 +16,60 @@ import getSearchInParam, { defaultSearchIn } from "@utils/getSearchInParam";
 export const search = async (
   query: string,
   page: number = 1,
-  searchIn: SearchIn = defaultSearchIn
+  searchIn: SearchIn = { content: true, titleAuthor: true, torrent: true }
 ) => {
-  const tt = getSearchInParam(searchIn);
+  try {
+    const { titleAuthor, content, torrent } = searchIn;
 
-  const params = new URLSearchParams({
-    s: query.toLowerCase(),
-    tt,
-  });
+    const params = new URLSearchParams({
+      s: query.toLowerCase(),
+      tt: [titleAuthor ? "1" : "", content ? "2" : "", torrent ? "3" : ""]
+        .filter(Boolean)
+        .join(","),
+    });
 
-  return await getAudiobooks(
-    `http://audiobookbay.se/page/${page}/?${params.toString()}`
-  );
+    return await getAudiobooks(
+      `http://audiobookbay.se/page/${page}/?${params.toString()}`
+    );
+  } catch (error) {
+    throw new Error("Nothing was found");
+  }
 };
 
 /**
- * Get Single Audiobook
+ * Get Audiobook
  *
- * @param audiobook Audiobook url
+ * @param id Audiobook url
+ * @param domain AudioBookBay site url
  * @returns Single Audiobook
  */
-export const audiobook = async (audiobook: string) =>
-  await getAudiobook(audiobook);
+export const audiobook = async (id: string, domain?: string) => {
+  try {
+    return await getAudiobook(id, domain);
+  } catch (error) {
+    throw new Error("Failed to get Audiobook");
+  }
+};
 
 /**
+ * Explore Audiobooks by Categories and Tags
  *
  * @param type Explore type Category/Tag
  * @param explore Category/Tag name
  * @param page Current Page
- * @returns Audiobook List
  */
 export const explore = async (
   type: "category" | "tag",
   explore: Categories | Tags,
   page: number = 1
 ) => {
-  const createURL = (
-    type: "type" | "tag",
-    typeOptions: Categories | Tags,
-    page: number = 1
-  ) => {
-    return `http://audiobookbay.se/audio-books/${type}/${typeOptions}/${
-      page !== 1 ? "page/" + page + "/" : ""
-    }`;
-  };
-
-  switch (type) {
-    case "category":
-      return await getAudiobooks(createURL("type", explore, page));
-
-    case "tag":
-      return await getAudiobooks(createURL("tag", explore, page));
-
-    default:
-      return new Promise((resolve) => {
-        resolve({
-          success: false,
-          message: "You can explore only by category and tag",
-        });
-      });
+  try {
+    return await getAudiobooks(
+      `http://audiobookbay.se/audio-books/${
+        type === "category" ? "type" : "tag"
+      }/${explore}/${page !== 1 ? "page/" + page + "/" : ""}`
+    );
+  } catch (error) {
+    throw new Error("You can explore only by category and tag");
   }
 };

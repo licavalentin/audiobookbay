@@ -1,21 +1,24 @@
+/**
+ * Search result AudioBook
+ */
 export interface Audiobook {
   title: string;
-  url: string | undefined;
-  category: string[];
+  id: string;
+  categories: string[];
   lang: string;
-  cover: string | undefined;
+  cover: string;
   posted: string;
   info: {
     format: string;
     unit: string;
-    size: string[];
+    size: string;
+    sizeUnit: string;
   };
 }
 
 export interface Pagination {
   currentPage: number;
   totalPages: number;
-  count: number;
 }
 
 /**

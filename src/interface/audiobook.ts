@@ -1,6 +1,6 @@
-export interface AudioBook {
+export interface Audiobook {
   title: string;
-  category: string[];
+  categories: string[];
   lang: string;
   cover: string | undefined;
   author: string;
@@ -19,6 +19,6 @@ export interface AudioBook {
   };
   related: {
     title: string;
-    url: string | undefined;
+    id: string | undefined;
   }[];
 }

@@ -2,7 +2,7 @@
     <img alt="Audiobookbay" src="https://user-images.githubusercontent.com/74852397/178808122-b7c5ab6d-7f4b-4826-b039-e43120b72322.svg" width="60" />
 </p>
 <h1 align="center">
-AudioBookBay Scraper Rest API NodeJS
+AudioBookBay Scraper NodeJS 
 </h1>
 
 ## 🏁 Install
@@ -11,7 +11,7 @@ AudioBookBay Scraper Rest API NodeJS
 npm install audiobookbay
 ```
 
-## 🔍 Searching for audiobooks
+## 🔍 Search Audiobooks
 
 | Name      | Description            | Default                                               | Type   |
 | --------- | ---------------------- | ----------------------------------------------------- | ------ |
@@ -22,9 +22,9 @@ npm install audiobookbay
 <br>
 
 ```js
-import audiobookbay from "audiobookbay";
+import { search } from "audiobookbay";
 
-const audiobooks = await audiobookbay.search("dune", 2, {
+const audiobooks = await search("dune", 1, {
   titleAuthor: true,
 });
 ```
@@ -33,8 +33,6 @@ const audiobooks = await audiobookbay.search("dune", 2, {
 
 ```json
 {
- "success": true,
- "count": "Audiobook Count",
  "pagination": {
   "currentPage": "Current Page",
   "total": "Total Pages"
@@ -45,7 +43,7 @@ const audiobooks = await audiobookbay.search("dune", 2, {
      "url":
        "Audiobook URL",
      "category":
-       ["Array of Category's"],
+       ["Array of Categories"],
      "lang": "Audiobook Language",
      "cover": "Audiobook Cover",
      "posted": "Date when Audiobook was posted",
@@ -59,7 +57,7 @@ const audiobooks = await audiobookbay.search("dune", 2, {
 }
 ```
 
-### 🪣 Exploring By Category/Tag
+### 🪣 Explore By Category/Tag
 
 #### Category Options
 
@@ -95,17 +93,15 @@ const audiobooks = await audiobookbay.search("dune", 2, {
 <br>
 
 ```js
-import audiobookbay from "audiobookbay";
+import { explore } from "audiobookbay";
 
-const audiobooks = await audiobookbay.explore("category", "postapocalyptic", 2);
+const audiobooks = await explore("category", "postapocalyptic", 2);
 ```
 
 ### Response
 
 ```json
 {
- "success": true,
- "count": "Audiobook Count",
  "pagination": {
   "currentPage": "Current Page",
   "total": "Total Pages"
@@ -116,7 +112,7 @@ const audiobooks = await audiobookbay.explore("category", "postapocalyptic", 2);
      "url":
        "Audiobook URL",
      "category":
-       ["Array of Category's"],
+       ["Array of Categories"],
      "lang": "Audiobook Language",
      "cover": "Audiobook Cover",
      "posted": "Date when Audiobook was posted",
@@ -132,16 +128,16 @@ const audiobooks = await audiobookbay.explore("category", "postapocalyptic", 2);
 
 ### 🎵 Get Audiobook
 
-| Name      | Description   | Default | Type   |
-| --------- | ------------- | ------- | ------ |
-| Audiobook | Audiobook URL |         | String |
+| Name | Description  | Default | Type   |
+| ---- | ------------ | ------- | ------ |
+| ID   | Audiobook ID |         | String |
 
 <br>
 
 ```js
-import audiobookbay from "audiobookbay";
+import { audiobook } from "audiobookbay";
 
-const audiobooks = await audiobookbay.audiobook(
+const audiobook = await audiobook(
   "the-road-to-dune-brian-herbert-kevin-j-anderson-frank-herbert"
 );
 ```
@@ -150,37 +146,34 @@ const audiobooks = await audiobookbay.audiobook(
 
 ```json
 {
-  "success": true,
-  "data": {
-    "title": "Audiobook title",
-    "category": ["Array of Category's"],
-    "lang": "Audiobook Language",
-    "cover": "Audiobook Cover",
-    "author": "Audiobook Author",
-    "read": "Audiobook Reader",
-    "audioSample": "Sample of Audiobook MP3",
-    "specs": {
-      "format": "Audiobook Format",
-      "bitrate": "Audiobook Bitrate"
-    },
-    "abridged": "Is the book shortened",
-    "desc": "Audiobook Description",
-    "torrent": {
-      "hash": "Audiobook Hash",
-      "trackers": ["Audiobook Trackers"],
-      "size": ["Audiobook size", "Size UNIT"]
-    },
-    "related": [
-      {
-        "title": "Related Audiobook Title",
-        "url": "Related Audiobook URL"
-      }
-    ]
-  }
+  "title": "Audiobook title",
+  "category": ["Array of Categories"],
+  "lang": "Audiobook Language",
+  "cover": "Audiobook Cover",
+  "author": "Audiobook Author",
+  "read": "Audiobook Reader",
+  "audioSample": "Sample of Audiobook MP3",
+  "specs": {
+    "format": "Audiobook Format",
+    "bitrate": "Audiobook Bitrate"
+  },
+  "abridged": "Is the book shortened",
+  "desc": "Audiobook Description",
+  "torrent": {
+    "hash": "Audiobook Hash",
+    "trackers": ["Audiobook Trackers"],
+    "size": ["Audiobook size", "Size UNIT"]
+  },
+  "related": [
+    {
+      "title": "Related Audiobook Title",
+      "url": "Related Audiobook URL"
+    }
+  ]
 }
 ```
 
-### 🧲 To create magnet link
+### 🧲 Create Magnet Link
 
 ```js
 const magnet = `magnet:?xt=urn:btih:${hash}&dn=${title}&tr=${torrent.trackers.join(
