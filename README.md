@@ -162,7 +162,9 @@ const audiobook = await audiobook(
   "torrent": {
     "hash": "Audiobook Hash",
     "trackers": ["Audiobook Trackers"],
-    "size": ["Audiobook size", "Size UNIT"]
+    "size": ["Audiobook size", "Size UNIT"],
+    "magnetUrl": "Magnet Link" // 🧲 Magnet Link
+
   },
   "related": [
     {
@@ -173,10 +175,3 @@ const audiobook = await audiobook(
 }
 ```
 
-### 🧲 Create Magnet Link
-
-```js
-const magnet = `magnet:?xt=urn:btih:${hash}&dn=${title}&tr=${torrent.trackers.join(
-  "&tr="
-)}`;
-```

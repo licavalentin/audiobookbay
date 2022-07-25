@@ -1,6 +1,7 @@
 import { Audiobook, Pagination } from "../src/interface/search";
+import { explore, search } from "../src/index";
 
-import getAudiobooks from "../src/utils/searchAudiobooks";
+import { searchAudiobooks } from "../src/utils/searchAudiobooks";
 
 const expectedData = (data: { pagination: Pagination; data: Audiobook[] }) => {
   expect(data).toEqual(
@@ -29,16 +30,49 @@ const expectedData = (data: { pagination: Pagination; data: Audiobook[] }) => {
   );
 };
 
-test("Search Audiobook", async () => {
-  expectedData(
-    await getAudiobooks(`http://audiobookbay.se/page/1/?s=dune&tt=1,2,3`)
-  );
-});
 
-test("Explore Audiobook", async () => {
-  expectedData(
-    await getAudiobooks(
-      `http://audiobookbay.se/audio-books/type/fantasy/page/2/`
-    )
-  );
+describe("Search Audiobooks", () => {
+
+  test("Search Audiobook", async () => {
+    expectedData(
+      await searchAudiobooks(`http://audiobookbay.se/page/1/?s=dune&tt=1,2,3`)
+    );
+  });
+
+  test("Explore Audiobook", async () => {
+    expectedData(
+      await searchAudiobooks(
+        `http://audiobookbay.se/audio-books/type/fantasy/page/2/`
+      )
+    );
+  });
+
+
+  test("Search", async () => {
+    const data = await search("dune");
+    expect(data.pagination.totalPages).toBeGreaterThan(5) // 18 at time of test
+    expectedData(data)
+  });
+
+
+  test("explore category", async () => {
+    const data = await explore("category", 'sci-fi');
+    expect(data.pagination.totalPages).toBeGreaterThan(100)
+    expectedData(data)
+  });
+
+
+  test("category with spaces parse - issue #6", async () => {
+    const data = await explore("category", 'teen-young-adult');
+    expect(data.pagination.totalPages).toBeGreaterThan(100)
+    expectedData(data)
+    expect(data.data[0].categories).toContain('Teen & Young Adult');
+  });
+
+  test("explore tag", async () => {
+    const data = await explore("tag", 'german');
+    expect(data.pagination.totalPages).toBeGreaterThan(1);
+    expectedData(data)
+  });
+
 });
