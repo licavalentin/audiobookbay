@@ -2,7 +2,7 @@
     <img alt="Audiobookbay" src="https://user-images.githubusercontent.com/74852397/178808122-b7c5ab6d-7f4b-4826-b039-e43120b72322.svg" width="60" />
 </p>
 <h1 align="center">
-AudioBookBay Scraper NodeJS 
+AudioBookBay Scraper JavaScript 
 </h1>
 
 ## 🏁 Install
@@ -164,7 +164,6 @@ const audiobook = await audiobook(
     "trackers": ["Audiobook Trackers"],
     "size": ["Audiobook size", "Size UNIT"],
     "magnetUrl": "Magnet Link" // 🧲 Magnet Link
-
   },
   "related": [
     {
@@ -174,4 +173,3 @@ const audiobook = await audiobook(
   ]
 }
 ```
-
