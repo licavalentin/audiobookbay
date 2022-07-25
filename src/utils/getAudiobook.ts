@@ -2,6 +2,12 @@ import cheerio from "cheerio";
 import fetch from "node-fetch";
 
 import { Audiobook } from "../interface/audiobook";
+import { generateMagnetUrl } from "./generateMagnetUrl";
+
+
+
+
+
 
 const getAudiobook = async (
   id: string,
@@ -116,6 +122,7 @@ const getAudiobook = async (
     }
   });
 
+
   return {
     title,
     categories: category,
@@ -134,9 +141,10 @@ const getAudiobook = async (
       hash,
       trackers,
       size,
+      magnetUrl: generateMagnetUrl(hash, title, trackers),
     },
     related,
-  };
+  } as Audiobook;
 };
 
-export default getAudiobook;
+export { getAudiobook };

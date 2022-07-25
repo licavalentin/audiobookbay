@@ -9,7 +9,7 @@ import { Audiobook, Pagination } from "../interface/search";
  * @param {string} url URL for audiobooks to scrape
  * @param {string} domain URL for audiobooks to scrape
  */
-const search = async (url: string, domain?: string) => {
+const searchAudiobooks = async (url: string, domain?: string) => {
   const request = await fetch(url);
   const results = await request.text();
   const $ = cheerio.load(results);
@@ -36,27 +36,29 @@ const search = async (url: string, domain?: string) => {
       id = urlEl.replace("/audio-books/", "").replace("/", "");
     }
 
-    // Category
-    const categories = $(element)
+    const postInfo = $(element)
       .find(`.postInfo`)
-      .text()
+      .text();
+
+    // Category
+    const categories = postInfo
       .split("Language:")[0]
       .replace("Category:", "")
       .trim()
-      .split(" ")
+      .split(String.fromCharCode(160))
       .map((e) => e.trim());
 
     // Language
-    const lang = $(element)
-      .find(`.postInfo`)
-      .text()
-      .split("Language: ")[1]
-      .split(`Keywords:`)[0];
+    let lang = ''
+
+    if (postInfo.indexOf('Language:') >= 0 && postInfo.indexOf('Keywords:') >= 0) {
+      lang = postInfo.split("Language: ")[1]
+        .split(`Keywords:`)[0];
+    }
 
     // Cover
-    let cover: string = `${
-      domain ?? "http://audiobookbay.se/images/default_cover.jpg"
-    }`;
+    let cover: string = `${domain ?? "http://audiobookbay.se/images/default_cover.jpg"
+      }`;
     const coverUrl = $(element).find(`.postContent img`).attr("src");
 
     if (coverUrl && coverUrl !== "") {
@@ -85,11 +87,14 @@ const search = async (url: string, domain?: string) => {
       .find(`.postContent span[style="color:#00f;"]`)
       .text();
 
-    const sizeUnit = $(element)
+    const sizeUnitText = $(element)
       .find(`p[style="text-align:center;"]`)
-      .text()
-      .split(size)[1]
-      .trim();
+      .text();
+
+    let sizeUnit = ''
+    if (sizeUnitText.indexOf(size) >= 0 && sizeUnitText.split(size).length > 0) {
+      sizeUnit = sizeUnitText.split(size)[1].trim();
+    }
 
     const audiobook = {
       title: title,
@@ -104,7 +109,7 @@ const search = async (url: string, domain?: string) => {
         size,
         sizeUnit,
       },
-    };
+    } as Audiobook;
 
     data.push(audiobook);
   });
@@ -146,4 +151,4 @@ const search = async (url: string, domain?: string) => {
   };
 };
 
-export default search;
+export { searchAudiobooks };

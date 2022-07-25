@@ -3,8 +3,8 @@ import { URLSearchParams } from "url";
 import { Categories, Tags } from "./interface/explore";
 import { SearchIn } from "./interface/search";
 
-import getAudiobook from "./utils/getAudiobook";
-import getAudiobooks from "./utils/searchAudiobooks";
+import { getAudiobook } from "./utils/getAudiobook";
+import { searchAudiobooks } from "./utils/searchAudiobooks";
 
 /**
  * Search Audiobooks
@@ -28,7 +28,7 @@ export const search = async (
         .join(","),
     });
 
-    return await getAudiobooks(
+    return await searchAudiobooks(
       `http://audiobookbay.se/page/${page}/?${params.toString()}`
     );
   } catch (error) {
@@ -64,7 +64,7 @@ export const explore = async (
   page: number = 1
 ) => {
   try {
-    return await getAudiobooks(
+    return await searchAudiobooks(
       `http://audiobookbay.se/audio-books/${
         type === "category" ? "type" : "tag"
       }/${explore}/${page !== 1 ? "page/" + page + "/" : ""}`

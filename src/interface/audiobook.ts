@@ -16,6 +16,7 @@ export interface Audiobook {
     hash: string | undefined;
     trackers: string[];
     size: string;
+    magnetUrl: string | undefined
   };
   related: {
     title: string;
