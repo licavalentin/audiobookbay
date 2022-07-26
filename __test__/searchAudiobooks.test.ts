@@ -50,14 +50,22 @@ describe("Search Audiobooks", () => {
 
   test("Search", async () => {
     const data = await search("dune");
-    expect(data.pagination.totalPages).toBeGreaterThan(5) // 18 at time of test
+    expect(data.pagination.totalPages).toBeGreaterThan(1)
     expectedData(data)
   });
 
+  test("Search - has cached result as Base64", async () => {
+    // was searching Sci Fi and it kept parsing error on this book. 
+    // turns out is does a base64 body some titles.... no idea how often this happens but seems really rare.
+    // To test: view http://audiobookbay.fi/?s=Centauri+Bliss with javascript disabled
+    const result = await search("Centauri Bliss");
+    expectedData(result)
+
+  });
 
   test("explore category", async () => {
     const data = await explore("category", 'sci-fi');
-    expect(data.pagination.totalPages).toBeGreaterThan(100)
+    expect(data.pagination.totalPages).toBeGreaterThan(1)
     expectedData(data)
   });
 
