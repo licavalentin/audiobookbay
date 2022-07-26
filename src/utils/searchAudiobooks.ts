@@ -54,7 +54,7 @@ const searchAudiobooks = async (url: string, domain?: string): Promise<AudioBook
       id = urlEl.replace("/audio-books/", "").replace("/", "");
     }
 
-    const postInfo = $(element)
+    const postInfo = postRoot(element)
       .find(`.postInfo`)
       .text();
 

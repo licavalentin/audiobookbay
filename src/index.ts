@@ -29,7 +29,7 @@ export const search = async (
         .join(","),
     });
     const url = `http://audiobookbay.se/page/${page}/?${params.toString()}`;
-    console.log(url);
+
     return await searchAudiobooks(url);
   } catch (error) {
     console.error(error);
