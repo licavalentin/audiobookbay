@@ -13,7 +13,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc -p .",
     "test": "vitest",
-    "dev": "esno ./playground/usage-example.ts",
+    "example": "esno ./playground/usage-example.ts",
     "coverage": "vitest run --coverage"
   },
   "author": "Valentin Lica",

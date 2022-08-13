@@ -7,8 +7,8 @@ import { getAudiobook } from "../src/utils/getAudiobook";
 
 // search params
 const searchTerm = 'John Bierce';
-const titleFilter = 'mage';
-const getMagnetLink = true;
+const titleFilters = ['mage'];
+const getMagnetLink = true; // set to false to skip magnet link retrieval
 
 async function main() {
 
@@ -29,10 +29,16 @@ async function main() {
   }
 
   // apply additional filtering
-  if (titleFilter.length > 0) {
+  if (titleFilters.length > 0) {
     searchResult.data = searchResult.data.filter(book => {
       // filter by title
-      return book.title.toLowerCase().indexOf(titleFilter.toLowerCase().trim()) >= 0;
+      let allMatch = true;
+      titleFilters.forEach(titleFilter => {
+        if(book.title.toLowerCase().indexOf(titleFilter.toLowerCase().trim()) < 0) {
+          allMatch = false;
+        }
+      });
+      return allMatch;
     });
   }
 
@@ -49,7 +55,7 @@ async function main() {
     pos += 1;
   }
   console.log(`${pc.yellow('Search term:')} ${searchTerm}`)
-  console.log(`${pc.yellow('Title Filter:')} ${titleFilter}`)
+  console.log(`${pc.yellow('Title Filters:')} ${titleFilters.join(',')}`)
   console.log(`${pc.yellow('Result Count:')} ${searchResult.data.length}`)
 
 }
