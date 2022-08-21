@@ -1,7 +1,7 @@
 import cheerio from "cheerio";
 import fetch from "node-fetch";
 
-import { Audiobook } from "../interface/audiobook";
+import { AudiobookDetails } from "../interface/audiobookDetails";
 import { generateMagnetUrl } from "./generateMagnetUrl";
 
 
@@ -12,7 +12,7 @@ import { generateMagnetUrl } from "./generateMagnetUrl";
 const getAudiobook = async (
   id: string,
   domain?: string
-): Promise<Audiobook> => {
+): Promise<AudiobookDetails> => {
   const request = await fetch(
     encodeURI(`${domain ?? "http://audiobookbay.se"}/audio-books/${id}/`)
   );
@@ -144,7 +144,7 @@ const getAudiobook = async (
       magnetUrl: generateMagnetUrl(hash, title, trackers),
     },
     related,
-  } as Audiobook;
+  } as AudiobookDetails;
 };
 
 export { getAudiobook };

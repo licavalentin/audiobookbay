@@ -16,6 +16,11 @@ export interface Audiobook {
   };
 }
 
+export interface AudioBookSearchResult {
+  data: Audiobook[]
+  pagination: Pagination;
+}
+
 export interface Pagination {
   currentPage: number;
   totalPages: number;

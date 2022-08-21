@@ -1,4 +1,5 @@
-export interface Audiobook {
+
+export interface AudiobookDetails {
   title: string;
   categories: string[];
   lang: string;

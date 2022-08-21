@@ -1,7 +1,8 @@
 import { URLSearchParams } from "url";
+import { AudiobookDetails } from "./interface/audiobookDetails";
 
 import { Categories, Tags } from "./interface/explore";
-import { SearchIn } from "./interface/search";
+import { AudioBookSearchResult, SearchIn } from "./interface/search";
 
 import { getAudiobook } from "./utils/getAudiobook";
 import { searchAudiobooks } from "./utils/searchAudiobooks";
@@ -17,7 +18,7 @@ export const search = async (
   query: string,
   page: number = 1,
   searchIn: SearchIn = { content: true, titleAuthor: true, torrent: true }
-) => {
+): Promise<AudioBookSearchResult> => {
   try {
     const { titleAuthor, content, torrent } = searchIn;
 
@@ -27,11 +28,11 @@ export const search = async (
         .filter(Boolean)
         .join(","),
     });
+    const url = `http://audiobookbay.se/page/${page}/?${params.toString()}`;
 
-    return await searchAudiobooks(
-      `http://audiobookbay.se/page/${page}/?${params.toString()}`
-    );
+    return await searchAudiobooks(url);
   } catch (error) {
+    console.error(error);
     throw new Error("Nothing was found");
   }
 };
@@ -43,7 +44,7 @@ export const search = async (
  * @param domain AudioBookBay site url
  * @returns Single Audiobook
  */
-export const audiobook = async (id: string, domain?: string) => {
+export const audiobook = async (id: string, domain?: string): Promise<AudiobookDetails> => {
   try {
     return await getAudiobook(id, domain);
   } catch (error) {
@@ -62,11 +63,10 @@ export const explore = async (
   type: "category" | "tag",
   explore: Categories | Tags,
   page: number = 1
-) => {
+): Promise<AudioBookSearchResult> => {
   try {
     return await searchAudiobooks(
-      `http://audiobookbay.se/audio-books/${
-        type === "category" ? "type" : "tag"
+      `http://audiobookbay.se/audio-books/${type === "category" ? "type" : "tag"
       }/${explore}/${page !== 1 ? "page/" + page + "/" : ""}`
     );
   } catch (error) {

@@ -1,7 +1,7 @@
 import cheerio from "cheerio";
 import fetch from "node-fetch";
 
-import { Audiobook, Pagination } from "../interface/search";
+import { Audiobook, AudioBookSearchResult, Pagination } from "../interface/search";
 
 /**
  * Search Audiobooks
@@ -9,7 +9,8 @@ import { Audiobook, Pagination } from "../interface/search";
  * @param {string} url URL for audiobooks to scrape
  * @param {string} domain URL for audiobooks to scrape
  */
-const searchAudiobooks = async (url: string, domain?: string) => {
+
+const searchAudiobooks = async (url: string, domain?: string): Promise<AudioBookSearchResult> => {
   const request = await fetch(url);
   const results = await request.text();
   const $ = cheerio.load(results);
@@ -18,12 +19,29 @@ const searchAudiobooks = async (url: string, domain?: string) => {
   if ($(`#content h3`).text().trim() === "Not Found") {
     throw new Error("Nothing was found");
   }
-
   // Get Details for each audiobook
   const data: Audiobook[] = [];
+  const posts = $(`#content div.post`);
 
-  $(`#content div.post`).each((index, element) => {
-    const audiobookTitleEl = $(element).find(`div.postTitle h2 a`);
+
+  posts.each((index, elementItem) => {
+
+    // assign the element to a variable, we may need to override it
+    let element = elementItem;
+    let postRoot = $
+
+    const isBase64ElementBody = (element as any).attribs.class.includes("post re-ab");
+    // so.... sometimes the post body is encoded in base64, so we need to decode it...
+    // guessing this is some type of cacheing thingy????
+    if (isBase64ElementBody) {
+      // lets change our element and postRoot to use the decoded element
+      const postAsBase64 = postRoot(element).text()
+      postRoot = cheerio.load(Buffer.from(postAsBase64, 'base64').toString('utf8'));
+      element = postRoot('body') as any;
+    }
+
+
+    const audiobookTitleEl = postRoot(element).find(`div.postTitle h2 a`);
 
     // Title
     const title = audiobookTitleEl.text();
@@ -36,7 +54,7 @@ const searchAudiobooks = async (url: string, domain?: string) => {
       id = urlEl.replace("/audio-books/", "").replace("/", "");
     }
 
-    const postInfo = $(element)
+    const postInfo = postRoot(element)
       .find(`.postInfo`)
       .text();
 
@@ -57,37 +75,36 @@ const searchAudiobooks = async (url: string, domain?: string) => {
     }
 
     // Cover
-    let cover: string = `${domain ?? "http://audiobookbay.se/images/default_cover.jpg"
-      }`;
-    const coverUrl = $(element).find(`.postContent img`).attr("src");
+    let cover: string = `${domain ?? "http://audiobookbay.se/images/default_cover.jpg"}`;
+    const coverUrl = postRoot(element).find(`.postContent img`).attr("src");
 
     if (coverUrl && coverUrl !== "") {
       cover = coverUrl;
     }
 
     // Posted
-    const posted = $(`p[style="text-align:center;"]`)
+    const posted = postRoot(`p[style="text-align:center;"]`)
       .text()
       .split("Posted:")[1]
       .split("Format:")[0]
       .trim();
 
     // Format
-    const format = $(element)
+    const format = postRoot(element)
       .find(`.postContent span[style="color:#a00;"]:nth-child(2)`)
       .text();
 
     // Unit
-    const unit = $(element)
+    const unit = postRoot(element)
       .find(`.postContent span[style="color:#a00;"]:nth-child(3)`)
       .text();
 
     // Size
-    const size = $(element)
+    const size = postRoot(element)
       .find(`.postContent span[style="color:#00f;"]`)
       .text();
 
-    const sizeUnitText = $(element)
+    const sizeUnitText = postRoot(element)
       .find(`p[style="text-align:center;"]`)
       .text();
 
@@ -148,7 +165,7 @@ const searchAudiobooks = async (url: string, domain?: string) => {
   return {
     pagination,
     data,
-  };
+  } as AudioBookSearchResult;
 };
 
 export { searchAudiobooks };

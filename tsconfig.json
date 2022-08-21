@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES6",
     "module": "CommonJS",
     "declaration": true,
     "declarationMap": true,
@@ -12,5 +12,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"]
+  "types": [
+    "vitest/globals"
+  ],
+  "include": [
+    "src"
+  ]
 }
