@@ -1,5 +1,6 @@
 import cheerio from "cheerio";
 import fetch from "node-fetch";
+import { audiobookBayUrl } from "../constants";
 
 import { AudiobookDetails } from "../interface/audiobookDetails";
 import { generateMagnetUrl } from "./generateMagnetUrl";
@@ -14,7 +15,7 @@ const getAudiobook = async (
   domain?: string
 ): Promise<AudiobookDetails> => {
   const request = await fetch(
-    encodeURI(`${domain ?? "http://audiobookbay.se"}/audio-books/${id}/`)
+    encodeURI(`${domain ?? audiobookBayUrl}/audio-books/${id}/`)
   );
   const results = await request.text();
   const $ = cheerio.load(results);
@@ -40,7 +41,7 @@ const getAudiobook = async (
     .attr("src");
 
   if (coverUrl === "/images/default_cover.jpg") {
-    cover = `${domain ?? "http://audiobookbay.se"}/${coverUrl}`;
+    cover = `${domain ?? audiobookBayUrl}/${coverUrl}`;
   } else {
     cover = coverUrl ?? "";
   }
