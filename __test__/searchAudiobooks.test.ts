@@ -1,5 +1,7 @@
 import { Audiobook, Pagination } from "../src/interface/search";
 import { explore, search } from "../src/index";
+import { audiobookBayUrl } from "../src/constants";
+
 
 import { searchAudiobooks } from "../src/utils/searchAudiobooks";
 
@@ -35,14 +37,14 @@ describe("Search Audiobooks", () => {
 
   test("Search Audiobook", async () => {
     expectedData(
-      await searchAudiobooks(`http://audiobookbay.se/page/1/?s=dune&tt=1,2,3`)
+      await searchAudiobooks(`${audiobookBayUrl}/page/1/?s=dune&tt=1,2,3`)
     );
   });
 
   test("Explore Audiobook", async () => {
     expectedData(
       await searchAudiobooks(
-        `http://audiobookbay.se/audio-books/type/fantasy/page/2/`
+        `${audiobookBayUrl}/audio-books/type/fantasy/page/2/`
       )
     );
   });

@@ -1,5 +1,6 @@
 import cheerio from "cheerio";
 import fetch from "node-fetch";
+import { audiobookBayUrl } from "../constants";
 
 import { Audiobook, AudioBookSearchResult, Pagination } from "../interface/search";
 
@@ -75,7 +76,7 @@ const searchAudiobooks = async (url: string, domain?: string): Promise<AudioBook
     }
 
     // Cover
-    let cover: string = `${domain ?? "http://audiobookbay.se/images/default_cover.jpg"}`;
+    let cover: string = `${domain ?? `${audiobookBayUrl}/images/default_cover.jpg`}`;
     const coverUrl = postRoot(element).find(`.postContent img`).attr("src");
 
     if (coverUrl && coverUrl !== "") {

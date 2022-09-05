@@ -1,4 +1,5 @@
 import { URLSearchParams } from "url";
+import { audiobookBayUrl } from "./constants";
 import { AudiobookDetails } from "./interface/audiobookDetails";
 
 import { Categories, Tags } from "./interface/explore";
@@ -28,7 +29,7 @@ export const search = async (
         .filter(Boolean)
         .join(","),
     });
-    const url = `http://audiobookbay.se/page/${page}/?${params.toString()}`;
+    const url = `${audiobookBayUrl}/page/${page}/?${params.toString()}`;
 
     return await searchAudiobooks(url);
   } catch (error) {
@@ -66,7 +67,7 @@ export const explore = async (
 ): Promise<AudioBookSearchResult> => {
   try {
     return await searchAudiobooks(
-      `http://audiobookbay.se/audio-books/${type === "category" ? "type" : "tag"
+      `${audiobookBayUrl}/audio-books/${type === "category" ? "type" : "tag"
       }/${explore}/${page !== 1 ? "page/" + page + "/" : ""}`
     );
   } catch (error) {
